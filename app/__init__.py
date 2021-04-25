@@ -7,7 +7,9 @@ import sys
 import socket
 from datetime import datetime
 from utils.helpers import calculate_proc_time
-
+from flask_pymongo import PyMongo
+from app.config import BaseConfig
+from flask_bcrypt import Bcrypt
 
 # Initialize application
 app = Flask(__name__)
@@ -18,6 +20,15 @@ app_settings = os.getenv(
 )
 mail = Mail(app)
 
+# each module should be import here
+app.config['MONGO_DBNAME'] = 'btkguzctt6o97cb'
+app.config['MONGO_URI'] = f'mongodb://ufumtyzgd9ji6x7g50f8:VJxXRkNWzzZq1EeokkGK@btkguzctt6o97cb-mongodb.services.clever-cloud.com:27017/btkguzctt6o97cb'
+app.config['SECRET_KEY'] = 'a5ea0c77491f965420dfa379ddb6105adb0e3e88'
+app.config['JWT_SECRET_KEY'] = 'super-secret' 
+
+mongo = PyMongo(app)
+bcrypt = Bcrypt(app)
+
 # app configuration
 app.config.from_object(app_settings)
 
@@ -26,19 +37,20 @@ blueprint = Blueprint('api', __name__)
 api = Api(blueprint, version='1.0', title='API',
           description='description of swagger')
 
-# each module should be import here
-# import app.Login.views as login_view
-
+import app.Login.views as login_view
+import app.Register.view as register_view
 
 
 # register namespace for swagger UI
-# api.add_namespace(login_view.login_ns)
-# api.add_namespace(login_view.forgot_password_ns)
+api.add_namespace(login_view.login_ns)
+api.add_namespace(login_view.forgot_password_ns)
+api.add_namespace(register_view.register)
 
 
 
-# api.namespaces.clear()
-# app.register_blueprint(blueprint)
+api.namespaces.clear()
+app.register_blueprint(blueprint)
+api.add_namespace(register_view.register)
 
 
 @app.route('/about')

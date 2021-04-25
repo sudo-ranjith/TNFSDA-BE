@@ -4,13 +4,19 @@ import os
 base_dir = os.path.abspath(os.path.dirname(__file__))
 CODE_BASE = 'TNAFD'
 
-class BaseConfig:
+
+class DatabaseConfig:
+    REGISTRATION_COL = 'users'
+    
+
+class BaseConfig(DatabaseConfig):
     """
     Base application configuration
     """
     DEBUG = False
     TESTING = False
     SECRET_KEY = os.getenv('SECRET_KEY', 'you should change this')
+    JWT_SECRET_KEY = 'super-secret'
     AUTH_TOKEN_EXPIRY_SECONDS = 500
     SUCCESS_MESSAGE = "Success"
     SUCCESS_MESSAGE_200 = "Success"
@@ -24,10 +30,8 @@ class BaseConfig:
     FAILURE_MESSAGE_500 = "Internal Server Error"
     FAILURE_MESSAGE = "Failed"
     # success and failure messages
-    if os.uname().sysname == 'Linux':
-        LOG_LOCATION = os.path.join('/var/opt', CODE_BASE)
-    else:
-        LOG_LOCATION = os.path.join(base_dir, CODE_BASE, 'Logs')
+    
+    LOG_LOCATION = os.path.join(base_dir, CODE_BASE, 'Logs')
     if not os.path.exists(LOG_LOCATION):
         os.makedirs(LOG_LOCATION)
 
@@ -47,6 +51,9 @@ class DevelopmentConfig(BaseConfig):
     MAIL_PASSWORD = '***********'
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
+    MONGO_DB = 'btkguzctt6o97cb'
+    MONGO_URI = f'mongodb://ufumtyzgd9ji6x7g50f8:VJxXRkNWzzZq1EeokkGK@{MONGO_DB}-mongodb.services.clever-cloud.com:27017/{MONGO_DB}'
+    print(f"MONGO_URI is : {MONGO_URI}")
 
 class TestingConfig(BaseConfig):
     """
