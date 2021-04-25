@@ -59,7 +59,7 @@ api.add_namespace(register_view.register)
 def test():
     func_resp = {}
     pc_name = socket.gethostname()
-    func_resp['message'] = "backend server working fine."
+    func_resp['message'] = "Application API working fine."
     func_resp['status'] = "success"
     func_resp['server_name'] = pc_name
     func_resp['os'] = sys.platform
