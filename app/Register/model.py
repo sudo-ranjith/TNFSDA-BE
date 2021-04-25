@@ -4,8 +4,6 @@ import traceback
 from app import mongo
 
 
-
-
 class RegisterCurb:
     """
          This class insert data

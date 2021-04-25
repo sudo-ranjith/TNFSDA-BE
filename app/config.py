@@ -6,7 +6,7 @@ CODE_BASE = 'TNAFD'
 
 
 class DatabaseConfig:
-    REGISTRATION_COL = 'users'
+    REGISTRATION_COL = 'app_users'
     
 
 class BaseConfig(DatabaseConfig):
