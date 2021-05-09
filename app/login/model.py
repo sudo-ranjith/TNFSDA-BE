@@ -2,6 +2,7 @@ from app import app
 import app.Common.helpers as common_helpers
 import traceback
 from app import mongo
+from pymongo import ReturnDocument
 
 
 class RegisterCurb:
@@ -37,15 +38,33 @@ class RegisterCurb:
 
     def read_data(self, query):
         try:
+            users = app.config.get('REGISTRATION_COL')
             register_col = mongo.db.users
             result_data = register_col.find_one(query)
             print(result_data)
             if result_data:
-                return {"exists": True, "item": result_data}
-            return {"exists": False, "item": result_data}
+                return {"exists": True, "data": result_data}
+            return {"exists": False, "data": result_data}
 
         except Exception as e:
             more_info = "Unable to fetch data : Exception occurred - " + traceback.format_exc()
             return common_helpers.response('failed',
                                            app.config["FAILURE_MESSAGE_500"],
                                            more_info, [], 500)
+
+    def find_modify(self, query, update):
+        try:
+            users = app.config.get('REGISTRATION_COL')
+            register_col = mongo.db.users
+            result_data = register_col.find_one_and_update(query,{'$set':update}, return_document = ReturnDocument.AFTER)
+            print(result_data)
+            if result_data:
+                return {"exists": True, "data": result_data}
+            return {"exists": False, "data": result_data}
+
+        except Exception as e:
+            more_info = "Unable to fetch data : Exception occurred - " + traceback.format_exc()
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)
+

@@ -4,7 +4,8 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.message import EmailMessage
 
-def response(status, message, more_info, data, code):
+
+def response(status, message, more_info, data, code, token=''):
     """
     Method to generate response
     """
@@ -12,7 +13,8 @@ def response(status, message, more_info, data, code):
         'status': status,
         'message': message,
         'more_info': more_info,
-        'data': data
+        'data': data,
+        'token': token
     })
     return_response.status_code = code
     return return_response

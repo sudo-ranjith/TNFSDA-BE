@@ -55,3 +55,4 @@ PyJWT==1.6.4
 Flask-Mail==0.9.1
 passwordgenerator==1.4
 bson==0.5.10
+Flask-JWT-Simple==0.0.3

@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, Namespace
 import app.Register.model as register_model
 import app.Register.serializers as register_serializers
-from app import app
+from app import app, bcrypt
 import app.Common.serializers as common_serializers
 import app.Common.helpers as common_helpers
 from datetime import  datetime
@@ -54,12 +54,12 @@ class Register(Resource):
 
             post_data['created_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
             post_data['active'] = 1
+            post_data['password'] = bcrypt.generate_password_hash(password)
             user_item = register_model.RegisterCurb()
             user_item = user_item.insert_data(post_data)
 
             if user_item is not None:
                 return user_item
-            user_item = register_model.RegisterCurb()
             more_info = "Successfully Inserted"
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],

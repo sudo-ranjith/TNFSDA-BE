@@ -10,6 +10,8 @@ from utils.helpers import calculate_proc_time
 from flask_pymongo import PyMongo
 from app.config import BaseConfig
 from flask_bcrypt import Bcrypt
+from flask_jwt_simple import JWTManager
+
 
 # Initialize application
 app = Flask(__name__)
@@ -28,6 +30,7 @@ app.config['JWT_SECRET_KEY'] = 'super-secret'
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
+jwt = JWTManager(app)
 
 # app configuration
 app.config.from_object(app_settings)
@@ -37,24 +40,23 @@ blueprint = Blueprint('api', __name__)
 api = Api(blueprint, version='1.0', title='API',
           description='description of swagger')
 
-import app.Login.views as login_view
+import app.login.view as login_view
 import app.Register.view as register_view
 
 
 # register namespace for swagger UI
-api.add_namespace(login_view.login_ns)
-api.add_namespace(login_view.forgot_password_ns)
 api.add_namespace(register_view.register)
+api.add_namespace(login_view.login_ns)
 
 
 
 api.namespaces.clear()
 app.register_blueprint(blueprint)
 api.add_namespace(register_view.register)
+api.add_namespace(login_view.login_ns)
 
 
 @app.route('/about')
-@app.route('/')
 @calculate_proc_time
 def test():
     func_resp = {}
