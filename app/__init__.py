@@ -12,54 +12,41 @@ from app.config import BaseConfig
 from flask_bcrypt import Bcrypt
 from flask_jwt_simple import JWTManager
 
-
 # Initialize application
 app = Flask(__name__)
-# Enabling cors
+# Enabling cores
 CORS(app)
-app_settings = os.getenv(
-    'APP_SETTINGS', 'app.config.DevelopmentConfig'
-)
+if os.environ.get('FLASK_ENV'):
+    env = os.environ.get('FLASK_ENV')
+    if env == "dev":
+        app_settings = os.getenv('APP_SETTINGS', 'app.config.DevelopmentConfig')
+    elif env == "qa":
+        app_settings = os.getenv('APP_SETTINGS', 'app.config.TestingConfig')
+    elif env == "prod":
+        app_settings = os.getenv('APP_SETTINGS', 'app.config.ProductionConfig')
+    else:
+        print("Given ENV is not configured")
+else:
+    app_settings = os.getenv('APP_SETTINGS', 'app.config.DevelopmentConfig')
+# app configuration
+app.config.from_object(app_settings)
 mail = Mail(app)
 
 # each module should be import here
-app.config['MONGO_DBNAME'] = 'btkguzctt6o97cb'
-app.config['MONGO_URI'] = f'mongodb://ufumtyzgd9ji6x7g50f8:VJxXRkNWzzZq1EeokkGK@btkguzctt6o97cb-mongodb.services.clever-cloud.com:27017/btkguzctt6o97cb'
-app.config['SECRET_KEY'] = 'a5ea0c77491f965420dfa379ddb6105adb0e3e88'
-app.config['JWT_SECRET_KEY'] = 'super-secret' 
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-# app configuration
-app.config.from_object(app_settings)
-
-
 blueprint = Blueprint('api', __name__)
 api = Api(blueprint, version='1.0', title='API',
           description='description of swagger')
-
-import app.login.view as login_view
-import app.Register.view as register_view
-
-
-# register namespace for swagger UI
-api.add_namespace(register_view.register)
-api.add_namespace(login_view.login_ns)
-
-
-
-api.namespaces.clear()
-app.register_blueprint(blueprint)
-api.add_namespace(register_view.register)
-api.add_namespace(login_view.login_ns)
 
 
 @app.route('/about')
 @calculate_proc_time
 def test():
-    func_resp = {}
+    func_resp = dict()
     pc_name = socket.gethostname()
     func_resp['message'] = "Application API working fine."
     func_resp['status'] = "success"
@@ -71,8 +58,6 @@ def test():
 
 @app.errorhandler(404)
 def not_found(error):
-    func_resp = {}
-    func_resp['now_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    func_resp['message'] = "Please check the End Point, API End Point is not available"
-    func_resp['status'] = "failed"
+    func_resp = {'now_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                 'message': "Please check the End Point, API End Point is not available", 'status': "failed"}
     return make_response(jsonify(func_resp), 404)
