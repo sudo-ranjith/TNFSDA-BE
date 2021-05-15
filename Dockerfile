@@ -1,8 +1,8 @@
-FROM continuumio/anaconda3:4.4.0
-COPY . /usr/app/
+FROM python:3.6-slim
+COPY . /app
+WORKDIR /app
+#RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+RUN export FLASK_ENV=dev
 EXPOSE 8080
-WORKDIR /usr/app/
-RUN pip install --upgrade pip
-RUN apt-get install -y python3-setuptools
-RUN pip install -r requirements.txt --ignore-installed
 CMD python app.py

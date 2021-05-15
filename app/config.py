@@ -53,7 +53,9 @@ class DevelopmentConfig(BaseConfig):
     MAIL_USE_SSL = True
     MONGO_DB = 'btkguzctt6o97cb'
     MONGO_URI = f'mongodb://ufumtyzgd9ji6x7g50f8:VJxXRkNWzzZq1EeokkGK@{MONGO_DB}-mongodb.services.clever-cloud.com:27017/{MONGO_DB}'
-    print(f"MONGO_URI is : {MONGO_URI}")
+    SECRET_KEY = 'a5ea0c77491f965420dfa379ddb6105adb0e3e88'
+    JWT_SECRET_KEY = 'super-secret'
+
 
 class TestingConfig(BaseConfig):
     """
