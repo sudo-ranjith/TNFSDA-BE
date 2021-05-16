@@ -39,8 +39,21 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 blueprint = Blueprint('api', __name__)
-api = Api(blueprint, version='1.0', title='API',
+api = Api(blueprint, version='1.0', title='API', url_prefix= '/api',
           description='description of swagger')
+
+import app.login.view as login_view
+import app.Register.view as register_view
+
+
+# register namespace for swagger UI
+api.add_namespace(register_view.register)
+api.add_namespace(login_view.login_ns)
+
+api.namespaces.clear()
+app.register_blueprint(blueprint)
+api.add_namespace(register_view.register)
+api.add_namespace(login_view.login_ns)
 
 
 @app.route('/about')
