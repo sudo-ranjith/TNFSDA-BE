@@ -12,6 +12,7 @@ from app.config import BaseConfig
 from flask_bcrypt import Bcrypt
 from flask_jwt_simple import JWTManager
 
+
 # Initialize application
 app = Flask(__name__)
 # Enabling cores

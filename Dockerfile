@@ -5,4 +5,4 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 RUN export FLASK_ENV=dev
 EXPOSE 8080
-CMD python app.py
+CMD python run.py
