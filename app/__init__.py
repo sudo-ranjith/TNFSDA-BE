@@ -11,10 +11,12 @@ from flask_pymongo import PyMongo
 from app.config import BaseConfig
 from flask_bcrypt import Bcrypt
 from flask_jwt_simple import JWTManager
+from werkzeug.contrib.fixers import ProxyFix
 
 
 # Initialize application
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 # Enabling cores
 CORS(app)
 if os.environ.get('FLASK_ENV'):
