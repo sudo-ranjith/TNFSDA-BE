@@ -8,7 +8,7 @@ import app.Common.helpers as common_helpers
 from datetime import  datetime
 
 
-register = Namespace('Register', description='Registration')
+register = Namespace('register', description='Registration')
 
 
 @register.route('')
