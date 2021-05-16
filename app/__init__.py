@@ -42,7 +42,7 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 blueprint = Blueprint('api', __name__)
-api = Api(blueprint, version='1.0', title='API', url_prefix= '/api',
+api = Api(blueprint, version='1.0', title='API', prefix = '/api',
           description='description of swagger')
 
 import app.login.view as login_view
