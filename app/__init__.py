@@ -21,7 +21,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 CORS(app)
 if os.environ.get('FLASK_ENV'):
     env = os.environ.get('FLASK_ENV')
-    if env == "dev":
+    if env == "development":
         app_settings = os.getenv('APP_SETTINGS', 'app.config.DevelopmentConfig')
     elif env == "qa":
         app_settings = os.getenv('APP_SETTINGS', 'app.config.TestingConfig')
@@ -47,16 +47,23 @@ api = Api(blueprint, version='1.0', title='API', prefix = '/api',
 
 import app.login.view as login_view
 import app.Register.view as register_view
+import app.fire_call.view as fire_call_view
+import app.rescue_call.view as rescue_call_view
 
 
 # register namespace for swagger UI
 api.add_namespace(register_view.register)
 api.add_namespace(login_view.login_ns)
+api.add_namespace(fire_call_view.fire_cal)
+api.add_namespace(rescue_call_view.resuce_cal)
 
 api.namespaces.clear()
 app.register_blueprint(blueprint)
+
 api.add_namespace(register_view.register)
 api.add_namespace(login_view.login_ns)
+api.add_namespace(fire_call_view.fire_cal)
+api.add_namespace(rescue_call_view.resuce_cal)
 
 
 @app.route('/about')

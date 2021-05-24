@@ -54,7 +54,7 @@ class Register(Resource):
 
             post_data['created_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
             post_data['active'] = 1
-            post_data['password'] = bcrypt.generate_password_hash(password)
+            post_data['password'] = str(bcrypt.generate_password_hash(password))
             user_item = register_model.RegisterCurb()
             user_item = user_item.insert_data(post_data)
 
