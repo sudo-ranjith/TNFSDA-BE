@@ -29,7 +29,7 @@ fire_call = api.model("fire_call", {
     "return_date_time_from_fire_acc" : fields.String(required=True, description="return_date_time_from_fire_acc"),
     "fire_controlling_time" : fields.String(required=True, description="fire_controlling_time"),
     "type" : fields.String(required=True, description="type"),
-    "rescued_members" : fields.String(required=True, description="rescued_members"),
+    "rescued_members" : fields.List(required=True, description="rescued_members"),
     "rescued_animal" : fields.String(required=True, description="rescued_animal"),
     "adipaadugal" : fields.String(required=True, description="adipaadugal"),
     "fire_station_name" : fields.String(required=True, description="fire_station_name"),
