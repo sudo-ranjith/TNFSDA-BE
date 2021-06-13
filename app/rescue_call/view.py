@@ -84,6 +84,7 @@ class Login(Resource):
         try:
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.get_count()
+            
 
             more_info = "Successfully fetched rescue count"
             return common_helpers.response('success',

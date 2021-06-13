@@ -29,9 +29,9 @@ class RegisterCurb:
 
     def get_count(self):
         try:
-            count_num = self.rescue_call_col.find({}).count()
+            count_num = self.rescue_call_col.find({})
             more_info = "Unable to Inserted data : Exception occurred - " + traceback.format_exc()
-            return {"data": count_num}
+            return {"data": list(count_num)}
             
         except Exception as e:
             more_info = "Unable to Inserted data : Exception occurred - " + traceback.format_exc()
