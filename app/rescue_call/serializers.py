@@ -5,7 +5,7 @@ from flask_restplus import Resource, fields
 from app import api
 
 
-rescue_call = api.model("fire_call", {
+rescue_call = api.model("rescue_call", {
     "kottam" : fields.String(required=True, description="kottam"),
     "station" : fields.String(required=True, description="station"),
     "fire_officer_name" : fields.String(required=True, description="fire_officer_name"),

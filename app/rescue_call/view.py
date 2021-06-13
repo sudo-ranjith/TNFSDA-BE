@@ -10,10 +10,10 @@ import traceback
 from flask_jwt_simple import JWTManager, jwt_required, get_jwt_identity
 
 
-resuce_cal = Namespace('rescue_call', description='rescue call api')
+resuce = Namespace('rescue_call', description='rescue call api')
 
 
-resuce_cal.route('')
+resuce.route('')
 # @jwt_required
 class Login(Resource):
     """
@@ -21,16 +21,16 @@ class Login(Resource):
          @return: success or failure message
      """
 
-    resuce_cal.expect(rescue_call_serializers.rescue_call, validate=True)
-    resuce_cal.response(200, app.config["SUCCESS_MESSAGE_200"], rescue_call_serializers.rescue_call)
-    resuce_cal.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
-    resuce_cal.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
-    resuce_cal.response(401, app.config["FAILURE_MESSAGE_401"], common_serializers.response_api_model)
-    resuce_cal.response(403, app.config["FAILURE_MESSAGE_403"], common_serializers.response_api_model)
-    resuce_cal.response(404, app.config["FAILURE_MESSAGE_404"], common_serializers.response_api_model)
-    resuce_cal.response(409, app.config["FAILURE_MESSAGE_409"], common_serializers.response_api_model)
-    resuce_cal.response(422, app.config["FAILURE_MESSAGE_422"], common_serializers.response_api_model)
-    resuce_cal.response(500, app.config["FAILURE_MESSAGE_500"], common_serializers.response_api_model)
+    resuce.expect(rescue_call_serializers.rescue_call, validate=True)
+    resuce.response(200, app.config["SUCCESS_MESSAGE_200"], rescue_call_serializers.rescue_call)
+    resuce.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
+    resuce.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
+    resuce.response(401, app.config["FAILURE_MESSAGE_401"], common_serializers.response_api_model)
+    resuce.response(403, app.config["FAILURE_MESSAGE_403"], common_serializers.response_api_model)
+    resuce.response(404, app.config["FAILURE_MESSAGE_404"], common_serializers.response_api_model)
+    resuce.response(409, app.config["FAILURE_MESSAGE_409"], common_serializers.response_api_model)
+    resuce.response(422, app.config["FAILURE_MESSAGE_422"], common_serializers.response_api_model)
+    resuce.response(500, app.config["FAILURE_MESSAGE_500"], common_serializers.response_api_model)
     def post(self):
         try:
             if not (request.content_type == 'application/json'):
@@ -63,7 +63,7 @@ class Login(Resource):
                                            app.config["FAILURE_MESSAGE_500"],
                                            more_info, [], 500)
 
-resuce_cal.route('/count')
+resuce.route('/count')
 # @jwt_required
 class Login(Resource):
     """
@@ -71,18 +71,17 @@ class Login(Resource):
          @return: success or failure message
      """
 
-    resuce_cal.response(200, app.config["SUCCESS_MESSAGE_200"], rescue_call_serializers.rescue_call)
-    resuce_cal.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
-    resuce_cal.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
-    resuce_cal.response(401, app.config["FAILURE_MESSAGE_401"], common_serializers.response_api_model)
-    resuce_cal.response(403, app.config["FAILURE_MESSAGE_403"], common_serializers.response_api_model)
-    resuce_cal.response(404, app.config["FAILURE_MESSAGE_404"], common_serializers.response_api_model)
-    resuce_cal.response(409, app.config["FAILURE_MESSAGE_409"], common_serializers.response_api_model)
-    resuce_cal.response(422, app.config["FAILURE_MESSAGE_422"], common_serializers.response_api_model)
-    resuce_cal.response(500, app.config["FAILURE_MESSAGE_500"], common_serializers.response_api_model)
+    resuce.response(200, app.config["SUCCESS_MESSAGE_200"], rescue_call_serializers.rescue_call)
+    resuce.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
+    resuce.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
+    resuce.response(401, app.config["FAILURE_MESSAGE_401"], common_serializers.response_api_model)
+    resuce.response(403, app.config["FAILURE_MESSAGE_403"], common_serializers.response_api_model)
+    resuce.response(404, app.config["FAILURE_MESSAGE_404"], common_serializers.response_api_model)
+    resuce.response(409, app.config["FAILURE_MESSAGE_409"], common_serializers.response_api_model)
+    resuce.response(422, app.config["FAILURE_MESSAGE_422"], common_serializers.response_api_model)
+    resuce.response(500, app.config["FAILURE_MESSAGE_500"], common_serializers.response_api_model)
     def get(self):
         try:
-            # post_data['created_by'] = current_user
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.get_count()
 
