@@ -55,7 +55,7 @@ import app.rescue_call.view as rescue_call_view
 api.add_namespace(register_view.register)
 api.add_namespace(login_view.login_ns)
 api.add_namespace(fire_call_view.fire_cal)
-api.add_namespace(rescue_call_view.resuce)
+api.add_namespace(rescue_call_view.rescue_cal)
 
 api.namespaces.clear()
 app.register_blueprint(blueprint)
@@ -63,7 +63,7 @@ app.register_blueprint(blueprint)
 api.add_namespace(register_view.register)
 api.add_namespace(login_view.login_ns)
 api.add_namespace(fire_call_view.fire_cal)
-api.add_namespace(rescue_call_view.resuce)
+api.add_namespace(rescue_call_view.rescue_cal)
 
 
 @app.route('/about')
