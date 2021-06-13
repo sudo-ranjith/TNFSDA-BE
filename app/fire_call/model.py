@@ -29,7 +29,7 @@ class RegisterCurb:
 
     def get_count(self):
         try:
-            user_info = self.fire_call_col.find({},{"_id":0})
+            user_info = self.fire_call_col.find({})
             user_info = list(user_info)
             more_info = "Unable to Inserted data : Exception occurred - " + traceback.format_exc()
             return {"data": user_info, "count": len(user_info)}

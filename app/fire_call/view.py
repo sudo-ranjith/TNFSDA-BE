@@ -86,7 +86,7 @@ class Login(Resource):
             # post_data['created_by'] = current_user
             user_item = fire_call_model.RegisterCurb()
             user_item = user_item.get_count()
-            # user_item = json_util.dumps(user_item)
+            user_item = json_util.dumps(user_item)
 
             more_info = "Successfully fetched firecall count"
             return common_helpers.response('success',
