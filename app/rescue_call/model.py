@@ -14,12 +14,12 @@ class RegisterCurb:
     
     def __init__(self):
         # assigning collection name here
-        self.fire_call_col = mongo.db.fire_call
+        self.rescue_call_col = mongo.db.fire_call
         
 
     def insert_data(self, query):
         try:
-            registered_email = self.fire_call_col.insert_one(query)
+            registered_email = self.rescue_call_col.insert_one(query)
             
         except Exception as e:
             more_info = "Unable to Inserted data : Exception occurred - " + traceback.format_exc()
@@ -29,7 +29,7 @@ class RegisterCurb:
 
     def get_count(self):
         try:
-            user_info = self.fire_call_col.find({},{"_id":0})
+            user_info = self.rescue_call_col.find({},{"_id":0})
             user_info = list(user_info)
             more_info = "Unable to Inserted data : Exception occurred - " + traceback.format_exc()
             return {"data": user_info, "count": len(user_info)}
@@ -43,7 +43,7 @@ class RegisterCurb:
 
     def read_data(self, query):
         try:
-            result_data = self.fire_call_col.find_one(query)
+            result_data = self.rescue_call_col.find_one(query)
             print(result_data)
             if result_data:
                 return {"exists": True, "data": result_data}
@@ -57,7 +57,7 @@ class RegisterCurb:
 
     def find_modify(self, query, update):
         try:
-            result_data = self.fire_call_col.find_one_and_update(query,{'$set':update}, return_document = ReturnDocument.AFTER)
+            result_data = self.rescue_call_col.find_one_and_update(query,{'$set':update}, return_document = ReturnDocument.AFTER)
             print(result_data)
             if result_data:
                 return {"exists": True, "data": result_data}
