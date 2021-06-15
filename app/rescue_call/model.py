@@ -14,7 +14,7 @@ class RegisterCurb:
     
     def __init__(self):
         # assigning collection name here
-        self.rescue_call_col = mongo.db.fire_call
+        self.rescue_call_col = mongo.db.rescue_call
         
 
     def insert_data(self, query):
