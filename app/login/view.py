@@ -18,7 +18,7 @@ class Login(Resource):
     """
          This class get form data
          @return: success or failure message
-     """
+    """
 
     @login_ns.expect(login_serializers.login, validate=True)
     @login_ns.response(200, app.config["SUCCESS_MESSAGE_200"], login_serializers.login)
