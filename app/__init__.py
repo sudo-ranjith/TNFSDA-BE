@@ -79,6 +79,7 @@ def test():
     func_resp = dict()
     pc_name = socket.gethostname()
     func_resp['message'] = "Application API working fine."
+    func_resp['build_version'] = "1.0"
     func_resp['status'] = "success"
     func_resp['server_name'] = pc_name
     func_resp['os'] = sys.platform
