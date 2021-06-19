@@ -9,7 +9,7 @@ fire_man = api.model("fire_man", {
     "first_name" : fields.String(required=True, description="first_name"),
     "last_name" : fields.String(required=True, description="last_name"),
     "id_number" : fields.String(required=True, description="id_number"),
-    "ranj" : fields.String(required=False, description="rank"),
+    "rank" : fields.String(required=False, description="rank"),
     'feeding_amount': fields.List(fields.Raw(), description="feeding_amount")
     })
 
