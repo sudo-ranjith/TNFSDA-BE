@@ -1,3 +1,4 @@
+from app import fire_man
 from flask import Flask, Blueprint, jsonify, make_response
 from flask_restplus import Api
 from flask_cors import CORS
@@ -49,6 +50,8 @@ import app.login.view as login_view
 import app.Register.view as register_view
 import app.fire_call.view as fire_call_view
 import app.rescue_call.view as rescue_call_view
+import app.fire_man.view as fire_man_view
+import app.feeding_data.view as feeding_data_view
 
 
 # register namespace for swagger UI
@@ -56,6 +59,8 @@ api.add_namespace(register_view.register)
 api.add_namespace(login_view.login_ns)
 api.add_namespace(fire_call_view.fire_cal)
 api.add_namespace(rescue_call_view.rescue_cal)
+api.add_namespace(fire_man_view.fireman)
+api.add_namespace(feeding_data_view.feeding_ns)
 
 api.namespaces.clear()
 app.register_blueprint(blueprint)
@@ -64,6 +69,8 @@ api.add_namespace(register_view.register)
 api.add_namespace(login_view.login_ns)
 api.add_namespace(fire_call_view.fire_cal)
 api.add_namespace(rescue_call_view.rescue_cal)
+api.add_namespace(fire_man_view.fireman)
+api.add_namespace(feeding_data_view.feeding_ns)
 
 
 @app.route('/about')
