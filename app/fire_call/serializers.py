@@ -38,6 +38,7 @@ fire_call = api.model("fire_call", {
     "destruction_of_the_site" : fields.String(required=True, description="destruction_of_the_site"),
     "dstrctn_for_those_who_within" : fields.String(required=True, description="dstrctn_for_those_who_within"),
     "value_of_property_protected_by_fire" : fields.String(required=True, description="value_of_property_protected_by_fire"),
+    "approval" : fields.Integer(required=True, description="approval"),
 
     "escaped_or_rescued_active" : fields.String(required=True, description="escaped_or_rescued_active"),
     "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),
