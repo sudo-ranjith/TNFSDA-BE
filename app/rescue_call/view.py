@@ -51,7 +51,7 @@ class Login(Resource):
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.insert_data(post_data)
 
-            more_info = "Successfully inserted firecall data"
+            more_info = "Successfully inserted rescue data"
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],
                                            more_info,
@@ -88,7 +88,7 @@ class Login(Resource):
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.get_count()
 
-            more_info = "Successfully fetched firecall count"
+            more_info = "Successfully fetched rescue count"
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],
                                            more_info,
