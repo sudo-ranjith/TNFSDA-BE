@@ -30,6 +30,9 @@ rescue_call = api.model("rescue_call", {
     "return_date_time_from_fire_acc" : fields.String(required=True, description="return_date_time_from_fire_acc"),
     "fire_controlling_time" : fields.String(required=True, description="fire_controlling_time"),
     "type" : fields.String(required=True, description="type"),
+    "rescued_animal_active" : fields.String(required=True, description="rescued_animal_active"),
+    "type_of_animal" : fields.String(required=True, description="type_of_animal"),
+    "no_of_animal" : fields.String(required=True, description="no_of_animal"),
 
     "escaped_or_rescued_active" : fields.String(required=True, description="escaped_or_rescued_active"),
     "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),
