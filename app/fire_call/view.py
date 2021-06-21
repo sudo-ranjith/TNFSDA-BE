@@ -112,7 +112,7 @@ class Login(Resource):
          @return: success or failure message
      """
 
-    @fire_cal.expect(fire_call_serializers.fire_call, validate=True)
+    @fire_cal.expect(fire_call_serializers.approval, validate=True)
     @fire_cal.response(200, app.config["SUCCESS_MESSAGE_200"], fire_call_serializers.fire_call)
     @fire_cal.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
     @fire_cal.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
@@ -134,12 +134,12 @@ class Login(Resource):
             current_user = get_jwt_identity()
             # check user has valid access token
 
-            post_data['created_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
-            post_data['created_by'] = current_user
-            id_number = post_data.get("id_number")
+            post_data['updated_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
+            post_data['updated_by'] = current_user
+            id_number = post_data.get("_id")
             post_data['active'] = 1
             user_item = fire_call_model.RegisterCurb()
-            user_item = user_item.find_modify({'id_number': id_number}, post_data)
+            user_item = user_item.find_modify({'_id': id_number}, post_data)
 
             more_info = "Successfully updated firecall data"
             return common_helpers.response('success',

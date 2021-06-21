@@ -47,3 +47,7 @@ rescue_call = api.model("rescue_call", {
     'Sign': fields.String(required=True, description="Sign")
     })
 
+approval = api.model("approval", {
+    "approve_status" : fields.Integer(required=True, description="approval"),
+    '_id': fields.String(required=True, description="_id")
+    })

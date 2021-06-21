@@ -110,7 +110,7 @@ class Login(Resource):
          @return: success or failure message
      """
 
-    @rescue_cal.expect(rescue_call_serializers.rescue_call, validate=True)
+    @rescue_cal.expect(rescue_call_serializers.approval, validate=True)
     @rescue_cal.response(200, app.config["SUCCESS_MESSAGE_200"], rescue_call_serializers.rescue_call)
     @rescue_cal.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
     @rescue_cal.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
@@ -132,12 +132,12 @@ class Login(Resource):
             current_user = get_jwt_identity()
             # check user has valid access token
 
-            post_data['created_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
-            post_data['created_by'] = current_user
-            id_number = post_data.get("id_number")
+            post_data['updated_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
+            post_data['updated_by'] = current_user
+            id_number = post_data.get("_id")
             post_data['active'] = 1
             user_item = rescue_call_model.RegisterCurb()
-            user_item = user_item.find_modify({'id_number': id_number}, post_data)
+            user_item = user_item.find_modify({'_id': id_number}, post_data)
 
             more_info = "Successfully updated rescue data"
             return common_helpers.response('success',
