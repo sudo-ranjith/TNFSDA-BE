@@ -74,7 +74,7 @@ class Login(Resource):
                                            more_info,
                                            [],
                                            200,
-                                           post_data['token'])
+                                           post_data['rank'])
         except Exception as e:
             e = f"{traceback.format_exc()}"
             more_info = "Unable to Inserted data :Exception occurred - " + str(e)
