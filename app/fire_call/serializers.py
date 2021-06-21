@@ -30,7 +30,7 @@ fire_call = api.model("fire_call", {
     "return_date_time_from_fire_acc" : fields.String(required=True, description="return_date_time_from_fire_acc"),
     "fire_controlling_time" : fields.String(required=True, description="fire_controlling_time"),
     "type" : fields.String(required=True, description="type"),
-    "type_of_fire" : fields.String(required=True, description="type_of_fire"),
+    "type_of_fire" : fields.String(required=False, description="type_of_fire"),
     "area_of_fire" : fields.String(required=True, description="area_of_fire"),
     "destruction_details" : fields.String(required=True, description="destruction_details"),
     "accidental_possession" : fields.String(required=True, description="accidental_possession"),

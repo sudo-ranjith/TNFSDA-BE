@@ -10,6 +10,7 @@ import traceback
 from flask_jwt_simple import JWTManager, jwt_required, get_jwt_identity
 from bson import json_util
 from bson.objectid import ObjectId
+from app.Common.functionalities import insert_feeding_data_to_user
 
 
 fire_cal = Namespace('fire_call', description='fire call api')
@@ -51,6 +52,11 @@ class Login(Resource):
             post_data['active'] = 1
             user_item = fire_call_model.RegisterCurb()
             user_item = user_item.insert_data(post_data)
+
+            # call to feeding process fire_officer_and_team
+            feeding_resp = insert_feeding_data_to_user(post_data.get("fire_officer_and_team"))
+
+
 
             more_info = "Successfully inserted firecall data"
             return common_helpers.response('success',
