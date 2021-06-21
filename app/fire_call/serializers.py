@@ -30,7 +30,7 @@ fire_call = api.model("fire_call", {
     "return_date_time_from_fire_acc" : fields.String(required=True, description="return_date_time_from_fire_acc"),
     "fire_controlling_time" : fields.String(required=True, description="fire_controlling_time"),
     "type" : fields.String(required=True, description="type"),
-    "type_of_fire" : fields.String(required=False, description="type_of_fire"),
+    # "type_of_fire" : fields.String(required=False, description="type_of_fire"),
     "area_of_fire" : fields.String(required=True, description="area_of_fire"),
     "destruction_details" : fields.String(required=True, description="destruction_details"),
     "accidental_possession" : fields.String(required=True, description="accidental_possession"),
@@ -38,7 +38,7 @@ fire_call = api.model("fire_call", {
     "destruction_of_the_site" : fields.String(required=True, description="destruction_of_the_site"),
     "dstrctn_for_those_who_within" : fields.String(required=True, description="dstrctn_for_those_who_within"),
     "value_of_property_protected_by_fire" : fields.String(required=True, description="value_of_property_protected_by_fire"),
-    "approval" : fields.Integer(required=True, description="approval"),
+    "approve_status" : fields.Integer(required=True, description="approval"),
 
     "escaped_or_rescued_active" : fields.String(required=True, description="escaped_or_rescued_active"),
     "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),

@@ -33,7 +33,7 @@ rescue_call = api.model("rescue_call", {
     "rescued_animal_active" : fields.String(required=True, description="rescued_animal_active"),
     "type_of_animal" : fields.String(required=True, description="type_of_animal"),
     "no_of_animal" : fields.String(required=True, description="no_of_animal"),
-    "approval" : fields.Integer(required=True, description="approval"),
+    "approve_status" : fields.Integer(required=True, description="approve_status"),
 
     "escaped_or_rescued_active" : fields.String(required=True, description="escaped_or_rescued_active"),
     "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),

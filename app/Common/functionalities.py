@@ -27,7 +27,7 @@ def insert_feeding_data_to_user(id_number, call_type):
             if not user_feeding.get('exists'):
                 to_insert_data['total_amount'] = 250
                 to_insert_data['day_feeding_status'] = "1"
-                to_insert_data['id_number']= fire_men.get('id_number')
+                to_insert_data['id_number'] = fire_men.get('id_number')
 
                 feeding_model.insert_data(to_insert_data)
                 func_resp['status'] = "pass"
