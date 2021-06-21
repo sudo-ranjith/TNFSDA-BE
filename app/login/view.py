@@ -72,9 +72,9 @@ class Login(Resource):
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],
                                            more_info,
-                                           [],
+                                           [post_data['rank']],
                                            200,
-                                           post_data['rank'])
+                                           post_data['token'])
         except Exception as e:
             e = f"{traceback.format_exc()}"
             more_info = "Unable to Inserted data :Exception occurred - " + str(e)
