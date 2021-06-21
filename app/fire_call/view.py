@@ -104,7 +104,7 @@ class Login(Resource):
                                            more_info, [], 500)
 
 
-@fire_cal.route('approve')
+@fire_cal.route('/approve')
 # @jwt_required
 class Login(Resource):
     """

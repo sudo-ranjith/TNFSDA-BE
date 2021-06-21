@@ -102,7 +102,7 @@ class Login(Resource):
                                            more_info, [], 500)
 
 
-@rescue_cal.route('approve')
+@rescue_cal.route('/approve')
 # @jwt_required
 class Login(Resource):
     """
