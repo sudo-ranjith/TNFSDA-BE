@@ -1,7 +1,10 @@
 import traceback
 from app.feeding_data.model import RegisterCurb as feeding_model
+from app.rescue_call.model import RegisterCurb as rescue_call_model
 from app.fire_call.model import RegisterCurb as fire_call_model
+from app.fire_man.model import RegisterCurb as fire_man_model
 from datetime import datetime
+from bson.objectid import ObjectId
 
 
 per_day_feeding_amount = 250
@@ -13,31 +16,80 @@ def insert_feeding_data_to_user(id_number, call_type):
     try:
         to_insert_data = {}
         to_insert_data['inserted_at'] = datetime.now()
-        # get the number of fire man went to the call
-        fire_call_data = fire_call_model.read_data({'_id':id_number})
-        fire_men_info = fire_call_data.get('fire_officer_and_team')
+        to_insert_data["call_type"] = call_type
+
+        if call_type == 'fire_call':
+            # get the number of fire man went to the call
+            call_data = fire_call_model.read_data({'_id':id_number})
+            fire_men_info = call_data.get('fire_officer_and_team')
+
+        elif call_type == 'rescue_call':
+            # get the number of fire man went to the call
+            call_data = rescue_call_model.read_data({'_id':id_number})
+            fire_men_info = call_data.get('fire_officer_and_team')
+
         for fire_men in fire_men_info:
             # check day_feeding_status
+            one_fireman_data = fire_man_model.read_data({'id_number': fire_men.get('id_number')})
             user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number')})
 
             to_insert_data[f'{call_type}_id'] = id_number
-            to_insert_data['feeding_amount'] = 250
+            to_insert_data['feeding_amount'] = per_day_feeding_amount
             to_insert_data['feeding_date'] = datetime.now().strftime(check_format)
 
-            if not user_feeding.get('exists'):
-                to_insert_data['total_amount'] = 250
-                to_insert_data['day_feeding_status'] = "1"
-                to_insert_data['id_number'] = fire_men.get('id_number')
+            # insert feeding if fireman data was not in feeding data
+            # check if fireman got feeding for the date,
+            # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
+            to_insert_data['day_feeding_status'] = "1"
+            to_insert_data['id_number'] = fire_men.get('id_number')
 
+            to_insert_data['update_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
+            to_insert_data['update_by'] = "admin"
+            to_insert_data['_id'] = str(ObjectId())
+
+            if not user_feeding.get('exists'):
+                to_insert_data['total_feeding_amount'] += per_day_feeding_amount
+                one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
+                
                 feeding_model.insert_data(to_insert_data)
+                fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
+                
                 func_resp['status'] = "pass"
                 return func_resp
-            
+            elif user_feeding.get('feeding_date') and (user_feeding.get('feeding_date') != datetime.now().strftime(check_format)):
+                to_insert_data['total_feeding_amount'] += per_day_feeding_amount
+                one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
+                
+                feeding_model.insert_data(to_insert_data)
+                fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
+                
+                func_resp['status'] = "pass"
+                return func_resp
+
             else:
                 if user_feeding.get('day_feeding_status') == "0":
                     # insert data into feeding collection
+                    to_insert_data['total_feeding_amount'] += per_day_feeding_amount
+                    one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
+                    
                     feeding_model.insert_data(to_insert_data)
+                    fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
+                    
+                    return func_resp
 
+        func_resp['status'] = "pass"
+    except Exception as e:
+        func_resp['status'] = "fail"
+        func_resp['error_details'] = traceback.format_exc()
+        func_resp['message'] = f"oops got an exception in feeding amount process, Please contact system admin. Exception is {e}"
+    finally:
+        return func_resp
+
+
+def insert_feeding_data_into_db(to_insert_data):
+    # Insert in feeding table and update fireman table (feeding_amount)
+    func_resp = {}
+    try:
         func_resp['status'] = "pass"
     except Exception:
         func_resp['status'] = "fail"

@@ -45,7 +45,7 @@ class Login(Resource):
             current_user = get_jwt_identity()
             # check user has valid access token
 
-            post_data['created_at'] = datetime.now().strftime('%Y%m%d%H%M%S%f')
+            post_data['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
             post_data['created_by'] = current_user
             post_data['_id'] = str(ObjectId())
             post_data['active'] = 1
