@@ -54,7 +54,8 @@ class Login(Resource):
             user_item = user_item.insert_data(post_data)
 
             # call to feeding process fire_officer_and_team
-            feeding_resp = insert_feeding_data_to_user(post_data.get("fire_officer_and_team"), "fire_call")
+            # feeding_resp = insert_feeding_data_to_user(post_data.get("fire_officer_and_team"), "fire_call")
+            feeding_resp = insert_feeding_data_to_user(post_data['_id'], "fire_call")
 
             more_info = "Successfully inserted firecall data"
             return common_helpers.response('success',
