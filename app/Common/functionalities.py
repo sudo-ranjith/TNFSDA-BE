@@ -7,6 +7,12 @@ from datetime import datetime
 from bson.objectid import ObjectId
 
 
+feeding_model = feeding_model()
+rescue_call_model = rescue_call_model()
+fire_call_model = fire_call_model()
+fire_man_model = fire_man_model()
+
+
 per_day_feeding_amount = 250
 check_format = "%Y%m%d"
 
@@ -21,17 +27,21 @@ def insert_feeding_data_to_user(id_number, call_type):
         if call_type == 'fire_call':
             # get the number of fire man went to the call
             call_data = fire_call_model.read_data({'_id':id_number})
+            call_data = call_data['data']
             fire_men_info = call_data.get('fire_officer_and_team')
 
         elif call_type == 'rescue_call':
             # get the number of fire man went to the call
             call_data = rescue_call_model.read_data({'_id':id_number})
+            call_data = call_data['data']
             fire_men_info = call_data.get('fire_officer_and_team')
 
         for fire_men in fire_men_info:
             # check day_feeding_status
             one_fireman_data = fire_man_model.read_data({'id_number': fire_men.get('id_number')})
+            one_fireman_data = one_fireman_data['data']
             user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number')})
+            user_feeding = user_feeding['data']
 
             to_insert_data[f'{call_type}_id'] = id_number
             to_insert_data['feeding_amount'] = per_day_feeding_amount
@@ -47,9 +57,9 @@ def insert_feeding_data_to_user(id_number, call_type):
             to_insert_data['update_by'] = "admin"
             to_insert_data['_id'] = str(ObjectId())
 
-            if not user_feeding.get('exists'):
-                to_insert_data['total_feeding_amount'] += per_day_feeding_amount
-                one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
+            if not user_feeding:
+                # to_insert_data.get('total_feeding_amount') += per_day_feeding_amount
+                one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount'] = per_day_feeding_amount
                 
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
@@ -74,7 +84,9 @@ def insert_feeding_data_to_user(id_number, call_type):
                     
                     feeding_model.insert_data(to_insert_data)
                     fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
-                    
+                    return func_resp
+                else:
+                    func_resp['message'] = "already feeding amount deposited."    
                     return func_resp
 
         func_resp['status'] = "pass"
