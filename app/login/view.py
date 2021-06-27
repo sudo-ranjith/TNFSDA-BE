@@ -62,10 +62,10 @@ class Login(Resource):
 
             post_data['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
             post_data['active'] = 1
-            post_data['token'] = create_jwt(email)
+            # post_data['token'] = create_jwt(email)
             del post_data['password']
-            user_item = login_model.RegisterCurb()
-            user_item = user_item.find_modify({'email': email}, post_data)
+            # user_item = login_model.RegisterCurb()
+            # user_item = user_item.find_modify({'email': email}, post_data)
 
             more_info = "Successfully Logged in"
             return common_helpers.response('success',
@@ -73,7 +73,7 @@ class Login(Resource):
                                            more_info,
                                            [post_data['rank']],
                                            200,
-                                           post_data['token'])
+                                           post_data['id_number'])
         except Exception as e:
             e = f"{traceback.format_exc()}"
             more_info = "Unable to Inserted data :Exception occurred - " + str(e)
