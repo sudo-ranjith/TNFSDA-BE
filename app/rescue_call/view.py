@@ -53,7 +53,7 @@ class Login(Resource):
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.insert_data(post_data)
 
-            feeding_resp = insert_feeding_data_to_user(post_data['_id'], "fire_call")
+            feeding_resp = insert_feeding_data_to_user(post_data['_id'], "rescue_call")
 
             more_info = "Successfully inserted rescue data"
             return common_helpers.response('success',
