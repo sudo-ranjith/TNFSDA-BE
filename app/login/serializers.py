@@ -6,8 +6,7 @@ from app import api
 
 
 login = api.model("login", {
-    "email": fields.String(required=True, description="Enter email"),
-    "rank": fields.String(required=True, description="Enter user RANK"),
+    "id_number": fields.String(required=True, description="Enter id_number"),
     "password": fields.String(required=True, description="Enter password"),
 })
 
