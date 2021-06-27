@@ -9,6 +9,8 @@ from datetime import  datetime
 import traceback
 from flask_jwt_simple import JWTManager, jwt_required, get_jwt_identity
 from bson.objectid import ObjectId
+from app.Common.functionalities import insert_feeding_data_to_user
+
 
 
 rescue_cal = Namespace('rescue_call', description='rescue call api')
@@ -50,6 +52,8 @@ class Login(Resource):
             post_data['_id'] = str(ObjectId())
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.insert_data(post_data)
+
+            feeding_resp = insert_feeding_data_to_user(post_data['_id'], "fire_call")
 
             more_info = "Successfully inserted rescue data"
             return common_helpers.response('success',
