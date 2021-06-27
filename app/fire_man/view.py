@@ -66,6 +66,46 @@ class Login(Resource):
                                            app.config["FAILURE_MESSAGE_500"],
                                            more_info, [], 500)
 
+
+@fireman.route('/profile')
+# @jwt_required
+class Login(Resource):
+    """
+         This class get form data
+         @return: success or failure message
+     """
+    @fireman.expect(fire_man_serializers.profile, validate=True)
+    @fireman.response(200, app.config["SUCCESS_MESSAGE_200"], fire_man_serializers.fire_man)
+    @fireman.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
+    @fireman.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
+    @fireman.response(401, app.config["FAILURE_MESSAGE_401"], common_serializers.response_api_model)
+    @fireman.response(403, app.config["FAILURE_MESSAGE_403"], common_serializers.response_api_model)
+    @fireman.response(404, app.config["FAILURE_MESSAGE_404"], common_serializers.response_api_model)
+    @fireman.response(409, app.config["FAILURE_MESSAGE_409"], common_serializers.response_api_model)
+    @fireman.response(422, app.config["FAILURE_MESSAGE_422"], common_serializers.response_api_model)
+    @fireman.response(500, app.config["FAILURE_MESSAGE_500"], common_serializers.response_api_model)
+    def post(self):
+        try:
+            post_data = request.get_json()
+            
+            user_item = fire_man_model.RegisterCurb()
+            user_item = user_item.read_data({"id_number":post_data.get('id_number')})
+            # user_item = json_util.dumps(user_item)
+            if user_item.get('exists'):
+                more_info = "Successfully fetched fireman profile data"
+            else:
+                more_info = "No fireman profile data fetched"
+            return common_helpers.response('success',
+                                           app.config["SUCCESS_MESSAGE_200"],
+                                           more_info,
+                                           user_item,
+                                           200)
+        except Exception as e:
+            e = f"{traceback.format_exc()}"
+            more_info = "Unable to Inserted data :Exception occurred - " + str(e)
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)
 @fireman.route('/count')
 # @jwt_required
 class Login(Resource):

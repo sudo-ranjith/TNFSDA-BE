@@ -13,3 +13,8 @@ fire_man = api.model("fire_man", {
     'feeding_amount': fields.List(fields.Raw(), description="feeding_amount")
     })
 
+
+profile = api.model("profile", {
+    "id_number" : fields.String(required=True, description="id_number")
+    })
+
