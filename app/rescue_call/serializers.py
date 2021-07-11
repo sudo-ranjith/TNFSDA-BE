@@ -51,3 +51,8 @@ approval = api.model("approval", {
     "approve_status" : fields.Integer(required=True, description="approval"),
     '_id': fields.String(required=True, description="_id")
     })
+
+feeding_report = api.model("feeding_report", {
+    'from_date': fields.String(required=True, description="from_date"),
+    'to_date': fields.String(required=True, description="to_date")
+    })
