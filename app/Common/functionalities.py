@@ -55,8 +55,8 @@ def insert_feeding_data_to_user(id_number, call_type):
             # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
             to_insert_data['day_feeding_status'] = "1"
             to_insert_data['id_number'] = fire_men.get('id_number')
-            to_insert_data['first_name'] = fire_men.get('first_name')
-            to_insert_data['last_name'] = fire_men.get('last_name')
+            to_insert_data['first_name'] = one_fireman_data.get('first_name')
+            to_insert_data['last_name'] = one_fireman_data.get('last_name')
 
             to_insert_data['vehicle_start_time'] = call_data.get('vehicle_start_time')
             to_insert_data['vehicle_reached_time'] = call_data.get('vehicle_reached_time')
