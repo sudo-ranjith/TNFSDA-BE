@@ -148,3 +148,49 @@ class Feeding(Resource):
             return common_helpers.response('failed',
                                            app.config["FAILURE_MESSAGE_500"],
                                            more_info, [], 500)
+
+
+@feeding_ns.route('/feeding_report')
+# @jwt_required
+class Login(Resource):
+    """
+         This class get form data
+         @return: success or failure message
+     """
+    @feeding_ns.expect(feeding_data_serializers.feeding_report, validate=True)
+    @feeding_ns.response(200, app.config["SUCCESS_MESSAGE_200"], feeding_data_serializers.feeding_report)
+    @feeding_ns.response(301, app.config["FAILURE_MESSAGE_301"], common_serializers.response_api_model)
+    @feeding_ns.response(400, app.config["FAILURE_MESSAGE_400"], common_serializers.response_api_model)
+    @feeding_ns.response(401, app.config["FAILURE_MESSAGE_401"], common_serializers.response_api_model)
+    @feeding_ns.response(403, app.config["FAILURE_MESSAGE_403"], common_serializers.response_api_model)
+    @feeding_ns.response(404, app.config["FAILURE_MESSAGE_404"], common_serializers.response_api_model)
+    @feeding_ns.response(409, app.config["FAILURE_MESSAGE_409"], common_serializers.response_api_model)
+    @feeding_ns.response(422, app.config["FAILURE_MESSAGE_422"], common_serializers.response_api_model)
+    @feeding_ns.response(500, app.config["FAILURE_MESSAGE_500"], common_serializers.response_api_model)
+    def post(self):
+        try:
+            post_data = request.get_json()
+            from_date = post_data.get("from_date")
+            to_date = post_data.get("to_date")
+            user_item = feeding_data_model.RegisterCurb()
+            query = {
+                "created_at":{
+                    "$gt": f"{from_date}",
+                    "$lt": f"{to_date}" 
+                    }
+                }
+
+            user_item = user_item.get_feeding_info(query)
+
+            more_info = "Successfully fetched firecall feeding report"
+            return common_helpers.response('success',
+                                           app.config["SUCCESS_MESSAGE_200"],
+                                           more_info,
+                                           user_item,
+                                           200)
+        except Exception as e:
+            e = f"{traceback.format_exc()}"
+            more_info = "Unable to fetch data :Exception occurred - " + str(e)
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)

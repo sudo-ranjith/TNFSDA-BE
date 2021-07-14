@@ -13,3 +13,8 @@ feeding_data = api.model("feeding_data", {
     'feeding_history': fields.List(fields.Raw(), description="feeding_history")
     })
 
+
+feeding_report = api.model("feeding_report", {
+    'from_date': fields.String(required=True, description="from_date"),
+    'to_date': fields.String(required=True, description="to_date")
+    })
