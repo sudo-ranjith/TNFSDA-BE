@@ -143,7 +143,7 @@ class Login(Resource):
             user_item = rescue_call_model.RegisterCurb()
             user_item = user_item.find_modify({'_id': id_number}, post_data)
 
-            more_info = "Successfully updated rescue data"
+            more_info = "Successfully approved"
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],
                                            more_info,
