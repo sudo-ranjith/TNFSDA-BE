@@ -40,7 +40,7 @@ def insert_feeding_data_to_user(id_number, call_type):
             # check day_feeding_status
             one_fireman_data = fire_man_model.read_data({'id_number': fire_men.get('id_number')})
             one_fireman_data = one_fireman_data['data']
-            user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number')})
+            user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number'), "feeding_date": datetime.now().strftime(check_format)})
             user_feeding = user_feeding['data']
 
             if not one_fireman_data.get('total_feeding_amount'):
@@ -55,6 +55,8 @@ def insert_feeding_data_to_user(id_number, call_type):
             # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
             to_insert_data['day_feeding_status'] = "1"
             to_insert_data['id_number'] = fire_men.get('id_number')
+            to_insert_data['first_name'] = fire_men.get('first_name')
+            to_insert_data['last_name'] = fire_men.get('last_name')
 
             to_insert_data['vehicle_start_time'] = call_data.get('vehicle_start_time')
             to_insert_data['vehicle_reached_time'] = call_data.get('vehicle_reached_time')
@@ -72,7 +74,6 @@ def insert_feeding_data_to_user(id_number, call_type):
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
                 func_resp['status'] = "pass"
-                return func_resp
                 
             elif user_feeding.get('feeding_date') and (user_feeding.get('feeding_date') != datetime.now().strftime(check_format)):
                 to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
@@ -81,7 +82,6 @@ def insert_feeding_data_to_user(id_number, call_type):
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
                 func_resp['status'] = "pass"
-                return func_resp
 
             else:
                 if user_feeding.get('day_feeding_status') == "0":
@@ -91,10 +91,8 @@ def insert_feeding_data_to_user(id_number, call_type):
                     
                     feeding_model.insert_data(to_insert_data)
                     fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
-                    return func_resp
                 else:
                     func_resp['message'] = "already feeding amount deposited."    
-                    return func_resp
 
         func_resp['status'] = "pass"
     except Exception as e:

@@ -45,6 +45,11 @@ class RegisterCurb:
         try:
             projection = {
                 "vehicle_start_time": 1,
+                "feeding_amount": 1,
+                "first_name": 1,
+                "last_name": 1,
+                "id_number": 1,
+                "call_type": 1,
                 "vehicle_reached_time": 1,
                 "fire_officer_and_team": 1,
                 "accident_date": 1
@@ -64,9 +69,12 @@ class RegisterCurb:
 
     def read_data(self, query):
         try:
-            result_data = self.feeding_col.find_one(query)
+            result_data = self.feeding_col.find(query).sort('created_at', -1)
             print(result_data)
             if result_data:
+                result_data = list(result_data)
+                if len(result_data) >= 1:
+                    result_data = result_data[0]
                 return {"exists": True, "data": result_data}
             return {"exists": False, "data": result_data}
 
