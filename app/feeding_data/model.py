@@ -41,6 +41,27 @@ class RegisterCurb:
                                            more_info, [], 500)
 
 
+    def get_feeding_info(self, query):
+        try:
+            projection = {
+                "vehicle_start_time": 1,
+                "vehicle_reached_time": 1,
+                "fire_officer_and_team": 1,
+                "accident_date": 1
+            }
+            result_data = self.feeding_col.find(query, projection)
+            print(result_data)
+            if result_data:
+                return {"exists": True, "data": list(result_data)}
+            return {"exists": False, "data": result_data}
+
+        except Exception as e:
+            more_info = "Unable to fetch data : Exception occurred - " + traceback.format_exc()
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)
+
+
     def read_data(self, query):
         try:
             result_data = self.feeding_col.find_one(query)

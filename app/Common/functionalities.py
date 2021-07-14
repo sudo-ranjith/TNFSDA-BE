@@ -56,6 +56,11 @@ def insert_feeding_data_to_user(id_number, call_type):
             to_insert_data['day_feeding_status'] = "1"
             to_insert_data['id_number'] = fire_men.get('id_number')
 
+            to_insert_data['vehicle_start_time'] = call_data.get('vehicle_start_time')
+            to_insert_data['vehicle_reached_time'] = call_data.get('vehicle_reached_time')
+            to_insert_data['accident_date'] = call_data.get('accident_date')
+            to_insert_data['created_at'] = call_data.get('created_at')
+            to_insert_data['created_by'] = "admin"
             to_insert_data['update_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
             to_insert_data['update_by'] = "admin"
             to_insert_data['_id'] = str(ObjectId())
@@ -66,16 +71,15 @@ def insert_feeding_data_to_user(id_number, call_type):
                 
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
-                
                 func_resp['status'] = "pass"
                 return func_resp
+                
             elif user_feeding.get('feeding_date') and (user_feeding.get('feeding_date') != datetime.now().strftime(check_format)):
                 to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
                 one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
                 
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
-                
                 func_resp['status'] = "pass"
                 return func_resp
 
