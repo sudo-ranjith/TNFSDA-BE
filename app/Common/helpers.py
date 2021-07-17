@@ -62,12 +62,12 @@ def response_jsonify(response_obj):
     return return_response
 
 
-def sent_mail(email, password):
+def sent_mail(email, content):
 
     message = """\
     Hi ,
     user_name - {}
-    password  - {}""".format(email, password)
+    content  - {}""".format(email, content)
     msg = EmailMessage()
     msg['Subject'] = 'Login Credentials'
     msg['From'] = app.config["MAIL_USERNAME"]

@@ -47,8 +47,8 @@ class DevelopmentConfig(BaseConfig):
     MYSQL_DB = '*******'
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
-    MAIL_USERNAME = '********'
-    MAIL_PASSWORD = '***********'
+    MAIL_USERNAME = 'tnfrsofficial@gmail.com'
+    MAIL_PASSWORD = 'tnfrs123'
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MONGO_DB = 'btkguzctt6o97cb'

@@ -39,9 +39,10 @@ class Login(Resource):
                                                [], 400)
             post_data = request.get_json()
             password = post_data.get("password")
+            rank = post_data.get("rank")
             id_number = post_data.get("id_number")
 
-            check_existing_query = {"id_number":  id_number}
+            check_existing_query = {"id_number":  id_number, "rank": rank}
 
             registeration_obj = login_model.RegisterCurb()
             user_data = registeration_obj.read_data(check_existing_query)

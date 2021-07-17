@@ -6,11 +6,7 @@ from app import api, feeding_data
 
 
 feeding_data = api.model("feeding_data", {
-    "id_number" : fields.String(required=True, description="id_number"),
-    "feeding_amount" : fields.String(required=True, description="feeding_amount"),
-
-    "is_active" : fields.String(required=True, description="is fireman active"),
-    'feeding_history': fields.List(fields.Raw(), description="feeding_history")
+    "id_number" : fields.String(required=True, description="id_number")
     })
 
 

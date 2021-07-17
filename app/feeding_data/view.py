@@ -15,7 +15,7 @@ from bson.objectid import ObjectId
 feeding_ns = Namespace('feeding_data', description='fire man api')
 
 
-@feeding_ns.route('')
+@feeding_ns.route('/mail')
 # @jwt_required
 class Login(Resource):
     """
@@ -41,16 +41,16 @@ class Login(Resource):
                                                'Content type should be application/json',
                                                [], 400)
             post_data = request.get_json()
-            token = post_data.get("token")
-            current_user = get_jwt_identity()
-            # check user has valid access token
+            id_number = post_data.get("id_number")
 
             post_data['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
-            post_data['created_by'] = current_user
             post_data['_id'] = str(ObjectId())
             post_data['active'] = 1
             user_item = feeding_data_model.RegisterCurb()
-            user_item = user_item.insert_data(post_data)
+            user_item = user_item.read_data({"id_number": id_number})
+            if user_item.get('exists'):
+                user_data = user_item['data']
+                # send out email
 
             more_info = "Successfully inserted feeding_ns data"
             return common_helpers.response('success',
