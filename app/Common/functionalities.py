@@ -35,8 +35,9 @@ def insert_feeding_data_to_user(id_number, call_type):
             call_data = rescue_call_model.read_data({'_id':id_number})
             call_data = call_data['data']
             fire_men_info = call_data.get('fire_officer_and_team')
-
+        user_feeding_status = []
         for fire_men in fire_men_info:
+            fireman_feeding_data = {}
             # check day_feeding_status
             one_fireman_data = fire_man_model.read_data({'id_number': fire_men.get('id_number')})
             one_fireman_data = one_fireman_data['data']
@@ -46,7 +47,7 @@ def insert_feeding_data_to_user(id_number, call_type):
             if not one_fireman_data.get('total_feeding_amount'):
                 one_fireman_data['total_feeding_amount'] = 0
 
-            to_insert_data[f'{call_type}_id'] = id_number
+            to_insert_data[f'call_id'] = id_number
             to_insert_data['feeding_amount'] = per_day_feeding_amount
             to_insert_data['feeding_date'] = datetime.now().strftime(check_format)
 
@@ -54,9 +55,9 @@ def insert_feeding_data_to_user(id_number, call_type):
             # check if fireman got feeding for the date,
             # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
             to_insert_data['day_feeding_status'] = "1"
-            to_insert_data['id_number'] = fire_men.get('id_number')
-            to_insert_data['first_name'] = one_fireman_data.get('first_name')
-            to_insert_data['last_name'] = one_fireman_data.get('last_name')
+            fireman_feeding_data['id_number'] = to_insert_data['id_number'] = fire_men.get('id_number')
+            fireman_feeding_data['first_name'] = to_insert_data['first_name'] = one_fireman_data.get('first_name')
+            fireman_feeding_data['last_name'] = to_insert_data['last_name'] = one_fireman_data.get('last_name')
 
             to_insert_data['vehicle_start_time'] = call_data.get('vehicle_start_time')
             to_insert_data['vehicle_reached_time'] = call_data.get('vehicle_reached_time')
@@ -74,6 +75,7 @@ def insert_feeding_data_to_user(id_number, call_type):
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
                 func_resp['status'] = "pass"
+                func_resp['message'] = "feeding amount deposited."
                 
             elif user_feeding.get('feeding_date') and (user_feeding.get('feeding_date') != datetime.now().strftime(check_format)):
                 to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
@@ -82,6 +84,7 @@ def insert_feeding_data_to_user(id_number, call_type):
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
                 func_resp['status'] = "pass"
+                func_resp['message'] = "feeding amount deposited."
 
             else:
                 if user_feeding.get('day_feeding_status') == "0":
@@ -91,15 +94,18 @@ def insert_feeding_data_to_user(id_number, call_type):
                     
                     feeding_model.insert_data(to_insert_data)
                     fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
+                    func_resp['message'] = "feeding amount deposited."
                 else:
                     func_resp['message'] = "already feeding amount deposited."    
-
+            fireman_feeding_data['message'] = func_resp['message']
+            user_feeding_status.append(fireman_feeding_data)
         func_resp['status'] = "pass"
     except Exception as e:
         func_resp['status'] = "fail"
         func_resp['error_details'] = traceback.format_exc()
         func_resp['message'] = f"oops got an exception in feeding amount process, Please contact system admin. Exception is {e}"
     finally:
+        func_resp['user_feeding_status'] = user_feeding_status
         return func_resp
 
 
