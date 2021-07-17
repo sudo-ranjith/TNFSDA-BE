@@ -54,7 +54,19 @@ class RegisterCurb:
                 "fire_officer_and_team": 1,
                 "accident_date": 1
             }
-            result_data = self.feeding_col.find(query, projection)
+            query = [{
+                    "$group": {
+                    "_id": "$call_id",
+                    "records": {
+                        "$push": "$$ROOT"
+                    },
+                    "count": {
+                        "$sum": 1
+                    }
+                    }
+                }]
+            # result_data = self.feeding_col.find(query, projection)
+            result_data = self.feeding_col.aggregate(query)
             print(result_data)
             if result_data:
                 return {"exists": True, "data": list(result_data)}
