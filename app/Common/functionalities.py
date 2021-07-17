@@ -41,7 +41,7 @@ def insert_feeding_data_to_user(id_number, call_type):
             # check day_feeding_status
             one_fireman_data = fire_man_model.read_data({'id_number': fire_men.get('id_number')})
             one_fireman_data = one_fireman_data['data']
-            user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number'), "feeding_date": datetime.now().strftime(check_format)})
+            user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number'), "feeding_date": call_data.get('accident_date')})
             user_feeding = user_feeding['data']
 
             if not one_fireman_data.get('total_feeding_amount'):
@@ -49,11 +49,10 @@ def insert_feeding_data_to_user(id_number, call_type):
 
             to_insert_data[f'call_id'] = id_number
             to_insert_data['feeding_amount'] = per_day_feeding_amount
-            to_insert_data['feeding_date'] = datetime.now().strftime(check_format)
+            # to_insert_data['feeding_date'] = datetime.now().strftime(check_format)
+            to_insert_data['feeding_date'] = call_data.get('accident_date')
 
             # insert feeding if fireman data was not in feeding data
-            # check if fireman got feeding for the date,
-            # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
             to_insert_data['day_feeding_status'] = "1"
             fireman_feeding_data['id_number'] = to_insert_data['id_number'] = fire_men.get('id_number')
             fireman_feeding_data['first_name'] = to_insert_data['first_name'] = one_fireman_data.get('first_name')
@@ -77,6 +76,9 @@ def insert_feeding_data_to_user(id_number, call_type):
                 func_resp['status'] = "pass"
                 func_resp['message'] = "feeding amount deposited."
                 
+            # check if fireman got feeding for the date,
+            # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
+
             elif user_feeding.get('feeding_date') and (user_feeding.get('feeding_date') != datetime.now().strftime(check_format)):
                 to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
                 one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
@@ -87,6 +89,7 @@ def insert_feeding_data_to_user(id_number, call_type):
                 func_resp['message'] = "feeding amount deposited."
 
             else:
+                # Incase if we want to provide feeding for some other purpose means, we can provide with day feeding flag.
                 if user_feeding.get('day_feeding_status') == "0":
                     # insert data into feeding collection
                     to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
