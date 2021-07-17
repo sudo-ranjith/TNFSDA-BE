@@ -173,12 +173,13 @@ class Login(Resource):
             from_date = post_data.get("from_date")
             to_date = post_data.get("to_date")
             user_item = feeding_data_model.RegisterCurb()
-            query = {
+           
+            query = { "$match": {
                 "created_at":{
                     "$gt": f"{from_date}",
                     "$lt": f"{to_date}" 
                     }
-                }
+                }}
 
             user_item = user_item.get_feeding_info(query)
 
