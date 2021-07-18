@@ -41,18 +41,46 @@ class Login(Resource):
                                                'Content type should be application/json',
                                                [], 400)
             post_data = request.get_json()
+
             id_number = post_data.get("id_number")
+            from_date = post_data.get("from_date")
+            to_date = post_data.get("to_date")
+           
+            query = {
+                "id_number": id_number,
+                "created_at":{
+                    "$gt": f"{from_date}",
+                    "$lt": f"{to_date}" 
+                    }
+                }
 
             post_data['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
             post_data['_id'] = str(ObjectId())
             post_data['active'] = 1
             user_item = feeding_data_model.RegisterCurb()
-            user_item = user_item.read_data({"id_number": id_number})
+            user_item = user_item.get_feeding_mail_data(query)
             if user_item.get('exists'):
                 user_data = user_item['data']
                 # send out email
+                rescue_call_counter = 0
+                fire_call_counter = 0
+                mail_dict = {}
+                for data in user_data:
+                    mail_dict[data.get('id_number')] = {}
+                    mail_dict[data.get('id_number')]['user_mail'] = data.get('email', 'sudo.ranjith@gmail.com')
+                    mail_dict[data.get('id_number')]['user_name'] = data.get('first_name') + ' ' + data.get('last_name')
+                    if data.get('call_type') == 'fire_call':
+                        fire_call_counter += 1
+                    if data.get('call_type') == 'rescue_call':
+                        rescue_call_counter += 1
 
-            more_info = "Successfully inserted feeding_ns data"
+                    mail_dict[data.get('id_number')]['feeding_amount'] = len(user_data) * data.get('feeding_amount', 0)
+                    mail_dict[data.get('id_number')]['feeding_report_month'] = f"{from_date} - {to_date}"
+                mail_dict[data.get('id_number')]['fire_call_count'] = fire_call_counter
+                mail_dict[data.get('id_number')]['rescue_call_count'] = rescue_call_counter
+                common_helpers.sent_mail(mail_dict)
+                more_info = "Successfully email sent"
+
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],
                                            more_info,

@@ -97,6 +97,21 @@ class RegisterCurb:
                                            app.config["FAILURE_MESSAGE_500"],
                                            more_info, [], 500)
 
+    def get_feeding_mail_data(self, query):
+        try:
+            result_data = self.feeding_col.find(query).sort('created_at', -1)
+            print(result_data)
+            if result_data:
+                result_data = list(result_data)
+                return {"exists": True, "data": result_data}
+            return {"exists": False, "data": result_data}
+
+        except Exception as e:
+            more_info = "Unable to fetch data : Exception occurred - " + traceback.format_exc()
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)
+
     def find_modify(self, query, update):
         try:
             result_data = self.feeding_col.find_one_and_update(query,{'$set':update}, return_document = ReturnDocument.AFTER)
