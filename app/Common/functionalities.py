@@ -44,8 +44,8 @@ def insert_feeding_data_to_user(id_number, call_type):
             user_feeding = feeding_model.read_data({'id_number': fire_men.get('id_number'), "accident_date": call_data.get('accident_date')})
             user_feeding = user_feeding['data']
 
-            if not one_fireman_data.get('total_feeding_amount'):
-                one_fireman_data['total_feeding_amount'] = 0
+            # if not one_fireman_data.get('total_feeding_amount'):
+            #     one_fireman_data['total_feeding_amount'] = 0
 
             to_insert_data[f'call_id'] = id_number
             to_insert_data['feeding_amount'] = per_day_feeding_amount
@@ -69,7 +69,7 @@ def insert_feeding_data_to_user(id_number, call_type):
 
             if not user_feeding:
                 # to_insert_data.get('total_feeding_amount') += per_day_feeding_amount
-                one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount'] = per_day_feeding_amount
+                # one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount'] = per_day_feeding_amount
                 
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
@@ -80,8 +80,8 @@ def insert_feeding_data_to_user(id_number, call_type):
             # if not updated feeding amount for today add existing total amount with per_day_feeding_amount
 
             elif user_feeding.get('feeding_date') and (user_feeding.get('feeding_date') != user_feeding.get('accident_date')):
-                to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
-                one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
+                # to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
+                # one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
                 
                 feeding_model.insert_data(to_insert_data)
                 fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
@@ -92,8 +92,8 @@ def insert_feeding_data_to_user(id_number, call_type):
                 # Incase if we want to provide feeding for some other purpose means, we can provide with day feeding flag.
                 if user_feeding.get('day_feeding_status') == "0":
                     # insert data into feeding collection
-                    to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
-                    one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
+                    # to_insert_data['total_feeding_amount'] = one_fireman_data.get('total_feeding_amount') + per_day_feeding_amount
+                    # one_fireman_data['total_feeding_amount'] = to_insert_data['total_feeding_amount']
                     
                     feeding_model.insert_data(to_insert_data)
                     fire_man_model.find_modify({'id_number': fire_men.get('id_number')}, one_fireman_data)
@@ -146,6 +146,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
                                     insertable_data[f_call_data.get('_id')].append(mnth_user_feed_records)
                                 else:
+                                    fm_data['feeding_amount'] = "-"
                                     insertable_data[f_call_data.get('_id')].append(fm_data)
                 # feeding_result.append(insertable_data)
                 
@@ -160,6 +161,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
                                     insertable_data[r_call_data.get('_id')].append(mnth_user_feed_records)
                                 else:
+                                    fm_data['feeding_amount'] = "-"
                                     insertable_data[r_call_data.get('_id')].append(fm_data)
             feeding_result.append(insertable_data)
         func_resp['status'] = "pass"
