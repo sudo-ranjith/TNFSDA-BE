@@ -5,6 +5,7 @@ import app.feeding_data.serializers as feeding_data_serializers
 from app import app
 import app.Common.serializers as common_serializers
 import app.Common.helpers as common_helpers
+from app.Common.functionalities import aggregate_user_data_with_feeding
 from datetime import  datetime
 import traceback
 from flask_jwt_simple import JWTManager, jwt_required, get_jwt_identity
@@ -208,14 +209,24 @@ class Login(Resource):
                     "$lt": f"{to_date}" 
                     }
                 }}
+            feeding_qry = {
+                "created_at":{
+                    "$gt": f"{from_date}",
+                    "$lt": f"{to_date}" 
+                    }
+                }
+            monthly_feeding_data = user_item.get_feeding_info(query).get('data')
+            final_result = aggregate_user_data_with_feeding(monthly_feeding_data, feeding_qry)
 
-            user_item = user_item.get_feeding_info(query)
+            # send the monthly_feeding_data and get all user + feeding info as array of dict
+
+
 
             more_info = "Successfully fetched firecall feeding report"
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],
                                            more_info,
-                                           user_item,
+                                           final_result,
                                            200)
         except Exception as e:
             e = f"{traceback.format_exc()}"
