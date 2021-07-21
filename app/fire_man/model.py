@@ -41,6 +41,19 @@ class RegisterCurb:
                                            more_info, [], 500)
 
 
+    def read_all_data(self, query):
+        try:
+            result_data = self.fire_man_col.find(query)
+            print(result_data)
+            if result_data:
+                return {"exists": True, "data": list(result_data)}
+            return {"exists": False, "data": result_data}
+
+        except Exception as e:
+            more_info = "Unable to fetch data : Exception occurred - " + traceback.format_exc()
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)
     def read_data(self, query):
         try:
             result_data = self.fire_man_col.find_one(query)
