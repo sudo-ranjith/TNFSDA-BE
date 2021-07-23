@@ -141,6 +141,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                             insertable_data = {}
                             # create each feeding row based on call
                             insertable_data["call_data"] = []
+                            insertable_data["call_id"] = f_call_data.get('_id')
 
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
@@ -156,6 +157,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                             insertable_data = {}
                             # create each feeding row based on call
                             insertable_data["call_data"] = []
+                            insertable_data["call_id"] = r_call_data.get('_id')
 
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
