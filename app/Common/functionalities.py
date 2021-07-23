@@ -140,14 +140,14 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                         if f_call_data.get('_id') == mnth_user_feed_records.get('call_id'):
                             insertable_data = {}
                             # create each feeding row based on call
-                            insertable_data[f_call_data.get('_id')] = []
+                            insertable_data["call_data"] = []
 
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
-                                    insertable_data[f_call_data.get('_id')].append(mnth_user_feed_records)
+                                    insertable_data["call_data"].append(mnth_user_feed_records)
                                 else:
                                     fm_data['feeding_amount'] = "-"
-                                    insertable_data[f_call_data.get('_id')].append(fm_data)
+                                    insertable_data["call_data"].append(fm_data)
                 # feeding_result.append(insertable_data)
                 
                 elif mnth_user_feed_records.get('call_type') == 'rescue_call':
@@ -155,14 +155,14 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                         if r_call_data.get('_id') == mnth_user_feed_records.get('call_id'):
                             insertable_data = {}
                             # create each feeding row based on call
-                            insertable_data[r_call_data.get('_id')] = []
+                            insertable_data["call_data"] = []
 
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
-                                    insertable_data[r_call_data.get('_id')].append(mnth_user_feed_records)
+                                    insertable_data["call_data"].append(mnth_user_feed_records)
                                 else:
                                     fm_data['feeding_amount'] = "-"
-                                    insertable_data[r_call_data.get('_id')].append(fm_data)
+                                    insertable_data["call_data"].append(fm_data)
             feeding_result.append(insertable_data)
         func_resp['status'] = "pass"
     except Exception:
