@@ -171,6 +171,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                             continue
             feeding_result.append(insertable_data)
         func_resp['status'] = "pass"
+        
     except Exception:
         func_resp['message'] = traceback.format_exc()
         func_resp['status'] = "fail"
