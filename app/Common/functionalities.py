@@ -154,7 +154,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                 elif mnth_user_feed_records.get('call_type') == 'rescue_call':
                     for r_call_data in rescue_call_data:
                         if r_call_data.get('_id') == mnth_user_feed_records.get('call_id'):
-                            insertable_data = {}
+                            # insertable_data = {}
                             # create each feeding row based on call
                             insertable_data["call_data"] = []
                             insertable_data["call_id"] = r_call_data.get('_id')
