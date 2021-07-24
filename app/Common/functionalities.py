@@ -134,21 +134,23 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
         for monthly_user_data in monthly_feeding_data:
             insertable_data = {}
             insertable_data["call_data"] = []
+            temp_fireman_id = []
             # here will get each fire call, firemen data and append into a list
             for mnth_user_feed_records in monthly_user_data.get('records'):
                 
                 if mnth_user_feed_records.get('call_type') == 'fire_call':
                     for f_call_data in fire_call_data:
-                
+                    
                         if f_call_data.get('_id') == mnth_user_feed_records.get('call_id'):
                             # create each feeding row based on call
                             insertable_data["call_id"] = f_call_data.get('_id')
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
+                                    temp_fireman_id.append(fm_data.get('id_number'))
                                     insertable_data["call_data"].append(mnth_user_feed_records)
                                 else:
                                     fm_data['feeding_amount'] = "-"
-                                    if not fm_data in insertable_data["call_data"]:
+                                    if (not fm_data in insertable_data["call_data"]) and (fm_data.get('id_number') not in temp_fireman_id):
                                         insertable_data["call_data"].append(fm_data)
                             # feeding_result.append(insertable_data)
                         else:
@@ -157,17 +159,18 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                 elif mnth_user_feed_records.get('call_type') == 'rescue_call':
                     # insertable_data = {}
                     # insertable_data["call_data"] = []
+                    # temp_fireman_id = []
                     for r_call_data in rescue_call_data:
                         if r_call_data.get('_id') == mnth_user_feed_records.get('call_id'):
                             # create each feeding row based on call
                             insertable_data["call_id"] = r_call_data.get('_id')
-
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
+                                    temp_fireman_id.append(fm_data.get('id_number'))
                                     insertable_data["call_data"].append(mnth_user_feed_records)
                                 else:
                                     fm_data['feeding_amount'] = "-"
-                                    if not fm_data in insertable_data["call_data"]:
+                                    if (not fm_data in insertable_data["call_data"]) and (fm_data.get('id_number') not in temp_fireman_id):
                                         insertable_data["call_data"].append(fm_data)
                         else:
                             continue
