@@ -165,7 +165,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                 else:
                                     fm_data['feeding_amount'] = "-"
                                     insertable_data["call_data"].append(fm_data)
-            feeding_result.append(insertable_data)
+                feeding_result.append(insertable_data)
         func_resp['status'] = "pass"
     except Exception:
         func_resp['message'] = traceback.format_exc()
