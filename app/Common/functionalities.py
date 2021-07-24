@@ -132,13 +132,13 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
         fire_man_data = fire_man_model.read_all_data(query).get('data')
         
         for monthly_user_data in monthly_feeding_data:
+            insertable_data = {}
             for mnth_user_feed_records in monthly_user_data.get('records'):
                 if mnth_user_feed_records.get('call_type') == 'fire_call':
-
+    
                     for f_call_data in fire_call_data:
-
+    
                         if f_call_data.get('_id') == mnth_user_feed_records.get('call_id'):
-                            insertable_data = {}
                             # create each feeding row based on call
                             insertable_data["call_data"] = []
                             insertable_data["call_id"] = f_call_data.get('_id')
@@ -165,7 +165,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                 else:
                                     fm_data['feeding_amount'] = "-"
                                     insertable_data["call_data"].append(fm_data)
-                feeding_result.append(insertable_data)
+            feeding_result.append(insertable_data)
         func_resp['status'] = "pass"
     except Exception:
         func_resp['message'] = traceback.format_exc()
