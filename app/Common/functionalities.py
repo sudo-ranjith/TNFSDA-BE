@@ -151,6 +151,9 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                         insertable_data["call_data"].remove({"id_number": fm_data.get('id_number')})
                                         temp_fireman_id.append(fm_data.get('id_number'))
                                         insertable_data["call_data"].append(mnth_user_feed_records)
+                                    else:
+                                        temp_fireman_id.append(fm_data.get('id_number'))
+                                        insertable_data["call_data"].append(mnth_user_feed_records)
                                 else:
                                     fm_data['feeding_amount'] = "-"
                                     if (fm_data not in insertable_data["call_data"]) and (fm_data.get('id_number') not in temp_fireman_id):
@@ -172,6 +175,9 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                     if fm_data.get('id_number') in temp_fireman_id:
                                         # remove the existing data from the insertable list
                                         insertable_data["call_data"].remove({"id_number": fm_data.get('id_number')})
+                                        temp_fireman_id.append(fm_data.get('id_number'))
+                                        insertable_data["call_data"].append(mnth_user_feed_records)
+                                    else:
                                         temp_fireman_id.append(fm_data.get('id_number'))
                                         insertable_data["call_data"].append(mnth_user_feed_records)
                                 else:
