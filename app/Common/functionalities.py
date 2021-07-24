@@ -132,8 +132,8 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
         fire_man_data = fire_man_model.read_all_data(query).get('data')
         
         for monthly_user_data in monthly_feeding_data:
-            insertable_data = {}
             for mnth_user_feed_records in monthly_user_data.get('records'):
+                insertable_data = {}
                 if mnth_user_feed_records.get('call_type') == 'fire_call':
     
                     for f_call_data in fire_call_data:
