@@ -186,7 +186,7 @@ class Login(Resource):
             to_date = post_data.get("to_date")
             user_item = fire_call_model.RegisterCurb()
             query = {
-                "created_at":{
+                "accident_date":{
                     "$gt": f"{from_date}",
                     "$lt": f"{to_date}" 
                     }
