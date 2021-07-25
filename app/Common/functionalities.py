@@ -229,5 +229,6 @@ def resolve_duplicate_entries(insertable_data):
     except Exception:
         func_resp['status'] = "fail"
     finally:
+        # sort list of dict based on key name
         result = sorted(result, key=lambda k: k['id_number']) 
         return result
