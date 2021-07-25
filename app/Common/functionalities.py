@@ -146,7 +146,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                             insertable_data["call_id"] = f_call_data.get('_id')
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
-                                    if fm_data.get('id_number') in temp_fireman_id:
+                                    if (fm_data.get('id_number') in temp_fireman_id) and (fm_data.get('id_number') in insertable_data["call_data"]):
                                         # remove the existing data from the insertable list 
                                         insertable_data["call_data"].remove({"id_number": fm_data.get('id_number')})
                                         temp_fireman_id.append(fm_data.get('id_number'))
@@ -157,6 +157,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                 else:
                                     fm_data['feeding_amount'] = "-"
                                     if (fm_data not in insertable_data["call_data"]) and (fm_data.get('id_number') not in temp_fireman_id):
+                                        temp_fireman_id.append(fm_data.get('id_number'))
                                         insertable_data["call_data"].append(fm_data)
                             # feeding_result.append(insertable_data)
                         else:
@@ -172,7 +173,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                             insertable_data["call_id"] = r_call_data.get('_id')
                             for fm_data in fire_man_data:
                                 if fm_data.get('id_number') == mnth_user_feed_records.get('id_number'):
-                                    if fm_data.get('id_number') in temp_fireman_id:
+                                    if (fm_data.get('id_number') in temp_fireman_id) and (fm_data.get('id_number') in insertable_data["call_data"]):
                                         # remove the existing data from the insertable list
                                         insertable_data["call_data"].remove({"id_number": fm_data.get('id_number')})
                                         temp_fireman_id.append(fm_data.get('id_number'))
@@ -183,10 +184,13 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                                 else:
                                     fm_data['feeding_amount'] = "-"
                                     if (fm_data not in insertable_data["call_data"]) and (fm_data.get('id_number') not in temp_fireman_id):
+                                        temp_fireman_id.append(fm_data.get('id_number'))
                                         insertable_data["call_data"].append(fm_data)
                         else:
                             continue
-            feeding_result.append(insertable_data)
+            # before inserting check any duplicate entries
+            clean_data = resolve_duplicate_entries(insertable_data)
+            feeding_result.append(clean_data)
         func_resp['status'] = "pass"
 
     except Exception:
@@ -197,11 +201,28 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
         return func_resp
 
 
-def generate_feeding_report(id_number):
+def resolve_duplicate_entries(insertable_data):
     func_resp = {}
     try:
+        result = []
+        _temp_list = []
+        for data in insertable_data['call_data']:
+            if data.get('id_number') not in _temp_list:
+                _temp_list.append(data.get('id_number'))
+                result.append(data)
+            else:
+                for x in result:
+                    if data.get('id_number') == x.get('id_number'):
+                        if data.get('feeding_amount') == "-":
+                            result.remove(data)
+                            result.append(x)
+                            print(data)
+                        if x.get('feeding_amount') == "-":
+                            result.remove(x)
+                            result.append(data)
+
         func_resp['status'] = "pass"
     except Exception:
         func_resp['status'] = "fail"
     finally:
-        return func_resp
+        return result
