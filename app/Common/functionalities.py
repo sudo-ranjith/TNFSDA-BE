@@ -190,7 +190,11 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                             continue
             # before inserting check any duplicate entries
             clean_data = resolve_duplicate_entries(insertable_data)
-            feeding_result.append(clean_data)
+            
+            feeding_result.append(
+                {"call_data": clean_data,
+                "call_id": insertable_data["call_id"]}
+                )
         func_resp['status'] = "pass"
 
     except Exception:
