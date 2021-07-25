@@ -229,4 +229,5 @@ def resolve_duplicate_entries(insertable_data):
     except Exception:
         func_resp['status'] = "fail"
     finally:
+        result = sorted(result, key=lambda k: k['id_number']) 
         return result
