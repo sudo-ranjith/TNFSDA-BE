@@ -40,15 +40,15 @@ fire_call = api.model("fire_call", {
     "value_of_property_protected_by_fire" : fields.String(required=True, description="value_of_property_protected_by_fire"),
     "approve_status" : fields.Integer(required=True, description="approval"),
 
-    "escaped_or_rescued_active" : fields.String(required=True, description="escaped_or_rescued_active"),
+    "escaped_or_rescued_active" : fields.String(required=False, description="escaped_or_rescued_active"),
     "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),
     'arrive_and_act': fields.List(fields.Raw(), description="arrive_and_act"),
     "adipaadugal_active" : fields.String(required=True, description="adipaadugal_active"),
-    'adipadugal_fire': fields.List(fields.Raw(), description="adipadugal_fire"),
-    'adipadugal_others': fields.List(fields.Raw(), description="adipadugal_others"),
+    'adipadugal_fire': fields.List(fields.Raw(), required=False, description="adipadugal_fire"),
+    'adipadugal_others': fields.List(fields.Raw(), required=False, description="adipadugal_others"),
     'fire_officer_and_team':fields.List(fields.Raw(), description="fire_officer_and_team"),
 
-    'Others': fields.String(required=True, description="Others"),
+    'Others': fields.String(required=False, description="Others"),
     'Sign': fields.String(required=True, description="Sign")
     })
 
