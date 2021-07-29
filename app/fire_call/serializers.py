@@ -41,11 +41,11 @@ fire_call = api.model("fire_call", {
     "approve_status" : fields.Integer(required=True, description="approval"),
 
     "escaped_or_rescued_active" : fields.String(required=False, description="escaped_or_rescued_active"),
-    "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),
+    "escaped_or_rescued" : fields.List(fields.Raw(), description="rescued_members"),
     'arrive_and_act': fields.List(fields.Raw(), description="arrive_and_act"),
-    "adipaadugal_active" : fields.String(required=True, description="adipaadugal_active"),
-    'adipadugal_fire': fields.List(fields.Raw(), required=False, description="adipadugal_fire"),
-    'adipadugal_others': fields.List(fields.Raw(), required=False, description="adipadugal_others"),
+    "adipaadugal_active" : fields.String(required=False, description="adipaadugal_active"),
+    'adipadugal_fire': fields.List(fields.Raw(), description="adipadugal_fire"),
+    'adipadugal_others': fields.List(fields.Raw(), description="adipadugal_others"),
     'fire_officer_and_team':fields.List(fields.Raw(), description="fire_officer_and_team"),
 
     'Others': fields.String(required=False, description="Others"),

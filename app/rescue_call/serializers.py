@@ -35,12 +35,12 @@ rescue_call = api.model("rescue_call", {
     "no_of_animal" : fields.String(required=True, description="no_of_animal"),
     "approve_status" : fields.Integer(required=True, description="approve_status"),
 
-    "escaped_or_rescued_active" : fields.String(required=False, description="escaped_or_rescued_active"),
+    "escaped_or_rescued_active" : fields.String(required=True, description="escaped_or_rescued_active"),
     "escaped_or_rescued" : fields.List(fields.Raw(), required=False, description="rescued_members"),
     'arrive_and_act': fields.List(fields.Raw(), description="arrive_and_act"),
     "adipaadugal_active" : fields.String(required=False, description="adipaadugal_active"),
-    'adipadugal_fire': fields.List(fields.Raw(), required=False, description="adipadugal_fire"),
-    'adipadugal_others': fields.List(fields.Raw(), required=False, description="adipadugal_others"),
+    'adipadugal_fire': fields.List(fields.Raw(), description="adipadugal_fire"),
+    'adipadugal_others': fields.List(fields.Raw(), description="adipadugal_others"),
     'fire_officer_and_team':fields.List(fields.Raw(), description="fire_officer_and_team"),
 
     'Others': fields.String(required=False, description="Others"),
