@@ -217,11 +217,8 @@ class Login(Resource):
                 }
             monthly_feeding_data = user_item.get_feeding_info(query).get('data')
             final_result = aggregate_user_data_with_feeding(monthly_feeding_data, feeding_qry)
-
+            final_result['total'] = user_item.get_total_feeding_info(query).get('data')
             # send the monthly_feeding_data and get all user + feeding info as array of dict
-
-
-
             more_info = "Successfully fetched firecall feeding report"
             return common_helpers.response('success',
                                            app.config["SUCCESS_MESSAGE_200"],

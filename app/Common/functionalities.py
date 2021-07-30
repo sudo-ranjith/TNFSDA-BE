@@ -195,6 +195,7 @@ def aggregate_user_data_with_feeding(monthly_feeding_data, query):
                 {"call_data": clean_data,
                 "call_id": insertable_data["call_id"]}
                 )
+        
         func_resp['status'] = "pass"
 
     except Exception:
@@ -230,5 +231,6 @@ def resolve_duplicate_entries(insertable_data):
         func_resp['status'] = "fail"
     finally:
         # sort list of dict based on key name
-        result = sorted(result, key=lambda k: k['id_number']) 
+        result = sorted(result, key=lambda k: k['id_number'])
+
         return result

@@ -79,6 +79,30 @@ class RegisterCurb:
                                            app.config["FAILURE_MESSAGE_500"],
                                            more_info, [], 500)
 
+    def get_total_feeding_info(self, query):
+        try:
+            query2 = [
+                query,{
+                    "$group": {
+                    "_id": "$id_number",
+                     "total_feeding_amount": { "$sum": "$feeding_amount" }
+                    }},
+                    { "$sort" : { "_id" : 1 } }
+                ]
+            # result_data = self.feeding_col.find(query, projection)
+            result_data = self.feeding_col.aggregate(query2)
+            print(result_data)
+            if result_data:
+                return {"exists": True, "data": list(result_data)}
+            return {"exists": False, "data": result_data}
+
+        except Exception as e:
+            more_info = "Unable to fetch data : Exception occurred - " + traceback.format_exc()
+            return common_helpers.response('failed',
+                                           app.config["FAILURE_MESSAGE_500"],
+                                           more_info, [], 500)
+
+
 
     def read_data(self, query):
         try:
